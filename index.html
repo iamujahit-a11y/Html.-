@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Editor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.8;
+        }
+
+        .editor-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            height: 600px;
+        }
+
+        @media (max-width: 768px) {
+            .editor-container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+        }
+
+        .code-editor, .preview {
+            padding: 20px;
+        }
+
+        .code-editor {
+            background: #1e1e1e;
+            border-right: 2px solid #34495e;
+        }
+
+        .editor-header, .preview-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .editor-header h3, .preview-header h3 {
+            color: #ecf0f1;
+            font-size: 1.2em;
+        }
+
+        .preview-header h3 {
+            color: #2c3e50;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        #runBtn {
+            background: #27ae60;
+        }
+
+        #runBtn:hover {
+            background: #219a52;
+        }
+
+        #clearBtn {
+            background: #e74c3c;
+        }
+
+        #clearBtn:hover {
+            background: #c0392b;
+        }
+
+        #htmlCode {
+            width: 100%;
+            height: 400px;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            border: 1px solid #444;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        #previewFrame {
+            width: 100%;
+            height: 400px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: white;
+        }
+
+        .features {
+            background: #f8f9fa;
+            padding: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .features h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .feature-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .feature-item h4 {
+            color: #3498db;
+            margin-bottom: 5px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #34495e;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛠️ HTML Editor</h1>
+            <p>Write HTML code and see live preview instantly</p>
+        </div>
+
+        <div class="editor-container">
+            <div class="code-editor">
+                <div class="editor-header">
+                    <h3>📝 Code Editor</h3>
+                </div>
+                <div class="toolbar">
+                    <button id="runBtn">▶️ Run Code</button>
+                    <button id="clearBtn">🗑️ Clear</button>
+                    <button id="templateBtn">📋 Basic Template</button>
+                </div>
+                <textarea id="htmlCode" placeholder="Write your HTML code here...">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;My Page&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        .container {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="container"&gt;
+        &lt;h1&gt;🚀 Welcome to HTML Editor!&lt;/h1&gt;
+        &lt;p&gt;This is a live preview of your HTML code.&lt;/p&gt;
+        &lt;p&gt;Edit the code on the left and see changes here instantly!&lt;/p&gt;
+        &lt;button style="background: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 5px; margin-top: 20px;"&gt;Click Me!&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+            </div>
+
+            <div class="preview">
+                <div class="preview-header">
+                    <h3>👁️ Live Preview</h3>
+                </div>
+                <iframe id="previewFrame"></iframe>
+            </div>
+        </div>
+
+        <div class="features">
+            <h3>✨ Features</h3>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h4>🌐 Live Preview</h4>
+                    <p>See your HTML changes in real-time</p>
+                </div>
+                <div class="feature-item">
+                    <h4>💾 Easy to Use</h4>
+                    <p>Simple and intuitive interface</p>
+                </div>
+                <div class="feature-item">
+                    <h4>📱 Responsive</h4>
+                    <p>Works on all devices</p>
+                </div>
+                <div class="feature-item">
+                    <h4>🎨 Modern Design</h4>
+                    <p>Clean and professional look</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2024 HTML Editor | Built with ❤️</p>
+        </div>
+    </div>
+
+    <script>
+        const htmlCode = document.getElementById('htmlCode');
+        const previewFrame = document.getElementById('previewFrame');
+        const runBtn = document.getElementById('runBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const templateBtn = document.getElementById('templateBtn');
+
+        // Run code function
+        function runCode() {
+            const code = htmlCode.value;
+            const preview = previewFrame.contentDocument || previewFrame.contentWindow.document;
+            
+            preview.open();
+            preview.write(code);
+            preview.close();
+        }
+
+        // Clear code function
+        function clearCode() {
+            if (confirm('Are you sure you want to clear all code?')) {
+                htmlCode.value = '';
+                runCode();
+            }
+        }
+
+        // Load basic template
+        function loadTemplate() {
+            htmlCode.value = `<!DOCTYPE html>
+<html>
+<head>
+    <title>My Web Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f4f4f4;
+        }
+        .header {
+            background: #3498db;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+        }
+        .content {
+            background: white;
+            padding: 30px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Welcome to My Website</h1>
+        <p>This is a basic HTML template</p>
+    </div>
+    <div class="content">
+        <h2>About This Page</h2>
+        <p>This is a simple HTML template to get you started.</p>
+        <button onclick="alert('Hello World!')">Click Me!</button>
+    </div>
+</body>
+</html>`;
+            runCode();
+        }
+
+        // Auto-run code when typing (with debounce)
+        let timeout;
+        htmlCode.addEventListener('input', () => {
+            clearTimeout(timeout);
+            timeout = setTimeout(runCode, 1000);
+        });
+
+        // Event listeners
+        runBtn.addEventListener('click', runCode);
+        clearBtn.addEventListener('click', clearCode);
+        templateBtn.addEventListener('click', loadTemplate);
+
+        // Initialize with default code
+        runCode();
+    </script>
+</body>
+</html>
